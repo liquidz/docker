@@ -4,7 +4,7 @@ MAINTAINER uochan
 ENV HOME /root
 
 ## yum
-RUN yum install -y sudo git which vim
+RUN yum install -y sudo git which vim wget tar unzip
 RUN rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
 RUN yum install --enablerepo=rpmforge tmux -y
 
