@@ -4,7 +4,7 @@ MAINTAINER uochan
 ENV HOME /root
 
 ## yum
-RUN yum install -y sudo git which vim wget tar unzip zsh
+RUN yum install -y sudo gcc git which vim wget tar unzip zsh
 RUN rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
 RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 RUN yum install --enablerepo=rpmforge tmux -y
@@ -39,3 +39,9 @@ RUN curl https://raw.githubusercontent.com/liquidz/dotfiles/master/bin/setup.sh 
 ## chef-repo
 RUN git clone https://github.com/liquidz/chef-repo.git /var/chef/chef-repo
 RUN (cd /var/chef/chef-repo && git submodule update --init)
+
+#ENV LANG     ja_JP.UTF-8
+#ENV LC_ALL   ja_JP.UTF-8
+#ENV LC_CTYPE ja_JP.UTF-8
+#RUN yum groupinstall -y "Japanese Support"
+##RUN yum install -y ncurses ncurses-devel mercurial lua lua-devel
