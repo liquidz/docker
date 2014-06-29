@@ -4,10 +4,13 @@ MAINTAINER uochan
 ENV HOME /root
 
 ## yum
-RUN yum install -y sudo gcc git which vim wget tar unzip zsh
-RUN rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
-RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-RUN yum install --enablerepo=rpmforge tmux -y
+RUN rpm -Uvh http://ftp-srv2.kddilabs.jp/Linux/distributions/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm &&\
+    yum -y upgrade
+
+RUN yum install -y sudo gcc git which vim wget tar unzip zsh &&\
+    yum -y clean all
+RUN yum install -y tmux &&\
+    yum -y clean all
 
 # Time Zone
 #RUN echo 'ZONE="Asia/Tokyo"' > /etc/sysconfig/clock
@@ -21,27 +24,23 @@ RUN yum install --enablerepo=rpmforge tmux -y
 RUN git config --global user.name "uochan"
 RUN git config --global user.email liquidz.uo@gmail.com
 
-## chef
-RUN curl -L https://www.opscode.com/chef/install.sh | bash
-RUN mkdir /etc/chef
-RUN touch /etc/chef/solo.rb
-RUN echo "cookbook_path ["                          >> /etc/chef/solo.rb
-RUN echo "  \"/var/chef/chef-repo/cookbooks\","     >> /etc/chef/solo.rb
-RUN echo "  \"/var/chef/chef-repo/site-cookbooks\"" >> /etc/chef/solo.rb
-RUN echo "]"                                        >> /etc/chef/solo.rb
-RUN echo "log_location \"/var/log/chef-solo.log\""  >> /etc/chef/solo.rb
-RUN echo "log_level :info"                          >> /etc/chef/solo.rb
-RUN mkdir /var/chef
+### chef
+#RUN curl -L https://www.opscode.com/chef/install.sh | bash
+#RUN mkdir /etc/chef
+#RUN touch /etc/chef/solo.rb
+#RUN echo "cookbook_path ["                          >> /etc/chef/solo.rb
+#RUN echo "  \"/var/chef/chef-repo/cookbooks\","     >> /etc/chef/solo.rb
+#RUN echo "  \"/var/chef/chef-repo/site-cookbooks\"" >> /etc/chef/solo.rb
+#RUN echo "]"                                        >> /etc/chef/solo.rb
+#RUN echo "log_location \"/var/log/chef-solo.log\""  >> /etc/chef/solo.rb
+#RUN echo "log_level :info"                          >> /etc/chef/solo.rb
+#RUN mkdir /var/chef
 
 ## dotfiles
 RUN curl https://raw.githubusercontent.com/liquidz/dotfiles/master/bin/setup.sh | env MODE=full sh
 
-## chef-repo
-RUN git clone https://github.com/liquidz/chef-repo.git /var/chef/chef-repo
-RUN (cd /var/chef/chef-repo && git submodule update --init)
+### chef-repo
+#RUN git clone https://github.com/liquidz/chef-repo.git /var/chef/chef-repo
+#RUN (cd /var/chef/chef-repo && git submodule update --init)
 
-#ENV LANG     ja_JP.UTF-8
-#ENV LC_ALL   ja_JP.UTF-8
-#ENV LC_CTYPE ja_JP.UTF-8
-#RUN yum groupinstall -y "Japanese Support"
-##RUN yum install -y ncurses ncurses-devel mercurial lua lua-devel
+CMD /bin/zsh
